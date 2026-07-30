@@ -1,0 +1,99 @@
+Let's fully scope this — "MedLink" (or whatever name you like): a real-time emergency resource matching network for beds, ICU slots, and blood units across hospitals.
+
+The core idea
+
+Hospitals are silos. When a patient needs an ICU bed or a rare blood type right now, staff manually call around — 20 minutes on the phone while a patient waits. Your system replaces that with: hospitals broadcast live inventory → an algorithm finds the nearest compatible match → dispatches it instantly, like Uber matching a rider to a driver, but for beds and blood.
+
+This is a strong hackathon pick because the "smart" part is a real algorithm (graph search + constraint matching), not a black-box model, so you can explain exactly why a match was chosen — judges love that transparency.
+
+System architecture
+Hospital Admin App (register inventory: beds, ICU, blood units)
+            |
+            v
+      Backend API (FastAPI)
+            |
+    ---------------------
+    |                    |
+PostgreSQL          Matching Engine
+(hospitals,         (graph + constraints)
+ inventory,               |
+ requests)          Dijkstra / A* for
+                    distance + filters
+    |                    |
+    ---------------------
+            |
+            v
+   Requester App (patient/ambulance/ER)
+   -> submits request -> gets ranked matches -> one-click dispatch
+            |
+            v
+      Live Dashboard (map view, real-time updates)
+The algorithm (this is your "wow" — be ready to explain it on stage)
+
+This isn't classification, it's constrained nearest-match search:
+
+Filter step (hard constraints) — from the pool of hospitals, keep only those where:
+Resource type matches (ICU bed / blood type, with blood compatibility rules like O- is universal donor, AB+ universal recipient)
+Quantity available ≥ requested
+Hospital is operational/reachable
+Ranking step (soft scoring) — among valid candidates, rank by a weighted score:
+   score = w1*(1/distance) + w2*(inventory_freshness) + w3*(hospital_capacity_headroom) - w4*(traffic_delay_estimate)
+
+Start with just distance + availability; add weights only if time permits.
+
+Path/distance computation — use the Haversine formula for straight-line distance (fast, no API needed) as your baseline, and optionally call a routing API (OpenRouteService, free tier) for real driving-time if you have internet access at the venue — this upgrades "distance" to "ETA," which is much more impressive.
+Matching as a graph problem — model it as a bipartite graph: patients/requests on one side, hospitals on the other, edges weighted by score. For a single request, this reduces to "find max-weight edge among valid candidates" (easy). For the stretch goal — multiple simultaneous requests competing for the same scarce resource — this becomes the Hungarian Algorithm / assignment problem, which is a great thing to mention even if you only get the simple version working; it shows you understand the harder version of the problem.
+Data model (PostgreSQL)
+sql
+hospitals(id, name, lat, lng, phone, type)
+inventory(id, hospital_id, resource_type ENUM('ICU','GENERAL_BED','BLOOD_A+','BLOOD_O-',...), quantity, last_updated)
+requests(id, patient_name, resource_type, urgency, lat, lng, status, created_at)
+matches(id, request_id, hospital_id, score, distance_km, status, matched_at)
+
+Keep it flat and simple — this is not the place to over-normalize.
+
+Tech stack (fastest path in 12 hours)
+Backend: Python FastAPI + Uvicorn (you already know this stack)
+DB: PostgreSQL, or even SQLite if Postgres setup eats time you don't have
+Frontend: React + Tailwind, with Leaflet.js (free, no API key) or Google Maps JS API for the live map
+Real-time updates: WebSockets (FastAPI supports natively) so the dashboard updates live when inventory changes — this is a great demo beat
+Distance/routing: Haversine formula in Python (no dependency), OpenRouteService as a stretch goal
+12-hour plan for a team of 5
+
+Hour 0–1: Setup & scaffolding (all 5)
+
+Repo, FastAPI skeleton, Postgres schema, React scaffold
+Agree on API contract (endpoints + JSON shapes) first so frontend/backend can work in parallel without blocking each other
+
+Hour 1–6: Parallel build
+
+Person A (Backend lead): Core FastAPI endpoints — POST /hospitals, POST /inventory, POST /requests, GET /matches/{request_id}
+Person B (Algorithm): Matching engine — filter + Haversine + scoring function, unit-testable in isolation with mock data
+Person C (Frontend — Hospital side): Admin dashboard for hospitals to register/update inventory
+Person D (Frontend — Requester side): Request form (resource type, location, urgency) → results list with ranked matches
+Person E (Data + Demo): Generate realistic mock data — 15–20 hospitals around a real city (use actual lat/lng of real hospitals in your city so the map looks real), seed inventory, and start building the map dashboard view (Leaflet)
+
+Hour 6–8: Integration
+
+Connect frontend to real backend endpoints (kill mock data)
+Get one full request → match → dispatch flow working end-to-end, even ugly
+
+Hour 8–10: WebSockets + live dashboard
+
+Add real-time push: when inventory changes or a match happens, the map/dashboard updates without refresh
+This is your single best "wow" moment for judges — a live map with hospital markers pulsing as beds fill up
+
+Hour 10–11: Polish + edge cases
+
+Blood-type compatibility logic (a few if/else rules, not ML — but shows domain knowledge)
+Urgency levels (critical requests jump the queue)
+Basic error states (no match found → suggest next-best radius expansion)
+
+Hour 11–12: Demo prep
+
+Script a 90-second live demo: submit an emergency O- blood request from a "location," show the algorithm filter+rank hospitals live, show map update, show dispatch confirmation
+One slide explaining the algorithm (filter → score → rank) since judges will ask "is this just a database query?" — you want a crisp answer ready: "it's a constrained assignment problem — we solve the single-request case greedily, and the underlying model extends to the Hungarian algorithm for the multi-request version."
+Stretch goals (only if hour 10 arrives ahead of schedule)
+Multi-request Hungarian algorithm for simultaneous scarce-resource competition
+Real routing ETA via OpenRouteService instead of straight-line distance
+SMS/WhatsApp alert to hospital staff on match (Twilio free tier)
