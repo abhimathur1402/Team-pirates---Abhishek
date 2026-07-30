@@ -1,0 +1,27 @@
+kind = "web"
+previewPath = "/"
+title = "MedLink"
+version = "1.0.0"
+id = "artifacts/medlink"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 19712
+
+[services.development]
+run = "pnpm --filter @workspace/medlink run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/medlink", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/medlink/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "19712"
+BASE_PATH = "/"
