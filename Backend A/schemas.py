@@ -35,10 +35,11 @@ class InventoryOut(BaseModel):
 class RequestCreate(BaseModel):
     patient_name: str
     resource_type: str
+    quantity: int = 1
+    blood_group: Optional[str] = None
     urgency: str = "medium"
     lat: float
     lng: float
-
 class RequestOut(BaseModel):
     id: int
     status: str
