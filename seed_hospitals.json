@@ -1,0 +1,128 @@
+[
+  {
+    "name": "Kala Inc Hospital",
+    "lat": 23.241161928519272,
+    "lng": 77.408468785669,
+    "resource_type": "BLOOD_O-",
+    "quantity": 18
+  },
+  {
+    "name": "Kashyap-Sankar Hospital",
+    "lat": 23.287299052133704,
+    "lng": 77.44910014546514,
+    "resource_type": "BLOOD_O+",
+    "quantity": 18
+  },
+  {
+    "name": "Hora Inc Hospital",
+    "lat": 23.257968185999168,
+    "lng": 77.37381280178846,
+    "resource_type": "ICU",
+    "quantity": 11
+  },
+  {
+    "name": "Mahajan Ltd Hospital",
+    "lat": 23.298262676454694,
+    "lng": 77.42108747503833,
+    "resource_type": "BLOOD_O+",
+    "quantity": 16
+  },
+  {
+    "name": "Dua-Borah Hospital",
+    "lat": 23.293110934540106,
+    "lng": 77.40126286159641,
+    "resource_type": "BLOOD_A+",
+    "quantity": 7
+  },
+  {
+    "name": "Bobal, Bir and Kurian Hospital",
+    "lat": 23.221267472915937,
+    "lng": 77.46224823609172,
+    "resource_type": "ICU",
+    "quantity": 6
+  },
+  {
+    "name": "Ray-Dutta Hospital",
+    "lat": 23.29421668566629,
+    "lng": 77.41449261826318,
+    "resource_type": "BLOOD_O-",
+    "quantity": 1
+  },
+  {
+    "name": "Peri-Kala Hospital",
+    "lat": 23.276063160505977,
+    "lng": 77.4527305110301,
+    "resource_type": "ICU",
+    "quantity": 9
+  },
+  {
+    "name": "Mand and Sons Hospital",
+    "lat": 23.26748604460775,
+    "lng": 77.42045345905784,
+    "resource_type": "BLOOD_O-",
+    "quantity": 3
+  },
+  {
+    "name": "Dara Group Hospital",
+    "lat": 23.212320803227563,
+    "lng": 77.40394234573327,
+    "resource_type": "BLOOD_O+",
+    "quantity": 1
+  },
+  {
+    "name": "Hegde Ltd Hospital",
+    "lat": 23.252323435810304,
+    "lng": 77.44776889280726,
+    "resource_type": "BLOOD_O+",
+    "quantity": 1
+  },
+  {
+    "name": "Srivastava-Goswami Hospital",
+    "lat": 23.278291985123722,
+    "lng": 77.37191982880745,
+    "resource_type": "GENERAL_BED",
+    "quantity": 13
+  },
+  {
+    "name": "Sawhney-Khare Hospital",
+    "lat": 23.268859422692035,
+    "lng": 77.39987016695069,
+    "resource_type": "BLOOD_O+",
+    "quantity": 19
+  },
+  {
+    "name": "Bora PLC Hospital",
+    "lat": 23.227084282430425,
+    "lng": 77.37082890635808,
+    "resource_type": "ICU",
+    "quantity": 8
+  },
+  {
+    "name": "Mody-Kannan Hospital",
+    "lat": 23.226402807092796,
+    "lng": 77.39758282503628,
+    "resource_type": "GENERAL_BED",
+    "quantity": 1
+  },
+  {
+    "name": "Patla-Mander Hospital",
+    "lat": 23.26855193603729,
+    "lng": 77.41038686254925,
+    "resource_type": "BLOOD_A+",
+    "quantity": 17
+  },
+  {
+    "name": "Iyer PLC Hospital",
+    "lat": 23.229307305100907,
+    "lng": 77.39580757557914,
+    "resource_type": "BLOOD_A+",
+    "quantity": 1
+  },
+  {
+    "name": "De, Agrawal and Chaudhari Hospital",
+    "lat": 23.251514699558026,
+    "lng": 77.45065459526575,
+    "resource_type": "GENERAL_BED",
+    "quantity": 16
+  }
+]

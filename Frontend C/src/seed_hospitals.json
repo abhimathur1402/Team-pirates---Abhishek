@@ -1,0 +1,128 @@
+[
+  {
+    "name": "Dara-Yogi Hospital",
+    "lat": 23.23379448323074,
+    "lng": 77.42546433186715,
+    "resource_type": "ICU",
+    "quantity": 18
+  },
+  {
+    "name": "Lala-Dixit Hospital",
+    "lat": 23.25631195231842,
+    "lng": 77.3924560590937,
+    "resource_type": "GENERAL_BED",
+    "quantity": 18
+  },
+  {
+    "name": "Arora-Gokhale Hospital",
+    "lat": 23.251775122191862,
+    "lng": 77.37024781214846,
+    "resource_type": "BLOOD_O-",
+    "quantity": 16
+  },
+  {
+    "name": "Varghese, Varughese and Choudhury Hospital",
+    "lat": 23.251847025458403,
+    "lng": 77.4039241168031,
+    "resource_type": "BLOOD_A+",
+    "quantity": 12
+  },
+  {
+    "name": "Bhasin Group Hospital",
+    "lat": 23.307265816810496,
+    "lng": 77.44922574574466,
+    "resource_type": "BLOOD_A+",
+    "quantity": 16
+  },
+  {
+    "name": "Lad, Banerjee and Mitter Hospital",
+    "lat": 23.22707180226976,
+    "lng": 77.42352427849582,
+    "resource_type": "ICU",
+    "quantity": 20
+  },
+  {
+    "name": "Loke and Sons Hospital",
+    "lat": 23.23156087930872,
+    "lng": 77.37370471184508,
+    "resource_type": "BLOOD_A+",
+    "quantity": 4
+  },
+  {
+    "name": "Thaman-Parmer Hospital",
+    "lat": 23.253669039850926,
+    "lng": 77.38953068956947,
+    "resource_type": "BLOOD_A+",
+    "quantity": 20
+  },
+  {
+    "name": "Trivedi Group Hospital",
+    "lat": 23.25761793669018,
+    "lng": 77.42652880740732,
+    "resource_type": "GENERAL_BED",
+    "quantity": 18
+  },
+  {
+    "name": "Basak and Sons Hospital",
+    "lat": 23.21666675482395,
+    "lng": 77.43995187695738,
+    "resource_type": "BLOOD_O-",
+    "quantity": 14
+  },
+  {
+    "name": "Mishra Inc Hospital",
+    "lat": 23.254878216010905,
+    "lng": 77.39404953009553,
+    "resource_type": "GENERAL_BED",
+    "quantity": 18
+  },
+  {
+    "name": "Shroff-Nazareth Hospital",
+    "lat": 23.278528639751574,
+    "lng": 77.3891583795714,
+    "resource_type": "BLOOD_A+",
+    "quantity": 12
+  },
+  {
+    "name": "Kapadia and Sons Hospital",
+    "lat": 23.230077032981864,
+    "lng": 77.44397782191358,
+    "resource_type": "BLOOD_A+",
+    "quantity": 15
+  },
+  {
+    "name": "Oak-Batta Hospital",
+    "lat": 23.24126536006154,
+    "lng": 77.4378694413655,
+    "resource_type": "BLOOD_O-",
+    "quantity": 6
+  },
+  {
+    "name": "Dhawan and Sons Hospital",
+    "lat": 23.24711690493162,
+    "lng": 77.36719808686787,
+    "resource_type": "ICU",
+    "quantity": 7
+  },
+  {
+    "name": "Sawhney and Sons Hospital",
+    "lat": 23.2149787932033,
+    "lng": 77.43048036752019,
+    "resource_type": "BLOOD_O+",
+    "quantity": 17
+  },
+  {
+    "name": "Magar Group Hospital",
+    "lat": 23.24086197048423,
+    "lng": 77.42008852191513,
+    "resource_type": "GENERAL_BED",
+    "quantity": 17
+  },
+  {
+    "name": "Bandi-Hans Hospital",
+    "lat": 23.306433922739686,
+    "lng": 77.36719519380765,
+    "resource_type": "BLOOD_A+",
+    "quantity": 10
+  }
+]
