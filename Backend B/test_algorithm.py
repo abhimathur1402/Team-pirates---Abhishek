@@ -7,7 +7,7 @@ request = {
     "lng": 77.410,
 
     "resource": "ICU",
-    "quantity": 300,
+    "quantity": 500,
 
     "blood_group": "A+"
 
