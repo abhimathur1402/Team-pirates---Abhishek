@@ -18,4 +18,11 @@ result = find_matches(request, hospitals)
 print("Eligible Hospitals:\n")
 
 for hospital in result:
-    print(hospital)
+
+    print()
+
+    print("Hospital :",hospital["name"])
+
+    print("Distance :",hospital["distance"],"km")
+
+    print("Score :",round(hospital["score"],4))

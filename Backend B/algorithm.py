@@ -57,7 +57,21 @@ def haversine(lat1, lng1, lat2, lng2):
 
 def score_candidate(candidate):
 
-    score = 1 / candidate["distance"]
+    distance_score = 1 / candidate["distance"]
+
+    inventory_score = candidate["inventory_freshness"] / 100
+
+    capacity_score = candidate["capacity_headroom"] / 100
+
+    score = (
+
+        0.6 * distance_score
+
+        + 0.2 * inventory_score
+
+        + 0.2 * capacity_score
+
+    )
 
     return score
 
