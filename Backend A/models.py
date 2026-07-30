@@ -24,7 +24,9 @@ class PatientRequest(Base):
     id = Column(Integer, primary_key=True, index=True)
     patient_name = Column(String)
     resource_type = Column(String, nullable=False)
-    urgency = Column(String, default="medium")   # 'critical', 'high', 'medium'
+    quantity = Column(Integer, default=1)
+    blood_group = Column(String, nullable=True)
+    urgency = Column(String, default="medium")
     lat = Column(Float, nullable=False)
     lng = Column(Float, nullable=False)
     status = Column(String, default="pending")
