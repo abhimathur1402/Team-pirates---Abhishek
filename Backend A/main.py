@@ -83,7 +83,7 @@ def get_matches(request_id: int, db: Session = Depends(get_db)):
             request_id=request_id,
             hospital_id=c["hospital_id"],
             score=c["score"],
-            distance_km=c["distance_km"],
+            distance_km=c["distance_in_km"],
             status="proposed"
         )
         db.add(db_match)
