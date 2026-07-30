@@ -55,6 +55,13 @@ def haversine(lat1, lng1, lat2, lng2):
     return R * c
 
 
+def score_candidate(candidate):
+
+    score = 1 / candidate["distance"]
+
+    return score
+
+
 # ------------------------------------------
 # Hospital Matching Function
 # ------------------------------------------
@@ -102,9 +109,12 @@ def find_matches(request, hospitals):
 
         hospital["distance"] = round(distance, 2)
 
+        hospital["score"] = score_candidate(hospital)
+
         matches.append(hospital)
 
     # Sort hospitals by nearest distance
-    matches.sort(key=lambda hospital: hospital["distance"])
-
-    return matches
+    matches.sort(
+    key=lambda hospital: hospital["score"],
+    reverse=True
+)

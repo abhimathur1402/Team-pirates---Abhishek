@@ -220,7 +220,11 @@ importers:
         specifier: 3.1.0
         version: 3.1.0
 
+<<<<<<< HEAD:Frontend B/pnpm-lock.yaml
   artifacts/medlink:
+=======
+  artifacts/medlink-hospital:
+>>>>>>> e1fe37bf322e45987614a4ce39aa3671b687e2ad:pnpm-lock.yaml
     devDependencies:
       '@hookform/resolvers':
         specifier: ^3.10.0

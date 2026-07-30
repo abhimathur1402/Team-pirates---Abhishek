@@ -3,13 +3,19 @@ info:
   # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: MedLink Hospital Admin API
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: hospitals
+    description: Hospital management
+  - name: inventory
+    description: Inventory management
+  - name: dashboard
+    description: Dashboard and stats
 paths:
   /healthz:
     get:
@@ -24,6 +30,202 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /hospitals:
+    get:
+      operationId: listHospitals
+      tags: [hospitals]
+      summary: List all hospitals
+      responses:
+        "200":
+          description: List of hospitals
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Hospital"
+    post:
+      operationId: createHospital
+      tags: [hospitals]
+      summary: Register a new hospital
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/HospitalInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Hospital"
+
+  /hospitals/{id}:
+    get:
+      operationId: getHospital
+      tags: [hospitals]
+      summary: Get hospital by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+      responses:
+        "200":
+          description: Hospital
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Hospital"
+        "404":
+          description: Not found
+    patch:
+      operationId: updateHospital
+      tags: [hospitals]
+      summary: Update hospital details
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/HospitalUpdate"
+      responses:
+        "200":
+          description: Updated hospital
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Hospital"
+
+  /hospitals/{id}/inventory:
+    get:
+      operationId: getHospitalInventory
+      tags: [inventory]
+      summary: Get all inventory for a hospital
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+      responses:
+        "200":
+          description: Hospital inventory items
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/InventoryItem"
+
+  /inventory:
+    get:
+      operationId: listInventory
+      tags: [inventory]
+      summary: List all inventory items across all hospitals
+      responses:
+        "200":
+          description: All inventory items
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/InventoryItem"
+    post:
+      operationId: createInventoryItem
+      tags: [inventory]
+      summary: Add a new inventory item for a hospital
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/InventoryInput"
+      responses:
+        "201":
+          description: Created inventory item
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InventoryItem"
+
+  /inventory/{id}:
+    patch:
+      operationId: updateInventoryItem
+      tags: [inventory]
+      summary: Update inventory quantity or status
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/InventoryUpdate"
+      responses:
+        "200":
+          description: Updated inventory item
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InventoryItem"
+    delete:
+      operationId: deleteInventoryItem
+      tags: [inventory]
+      summary: Remove an inventory item
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+      responses:
+        "204":
+          description: Deleted
+
+  /dashboard/stats:
+    get:
+      operationId: getDashboardStats
+      tags: [dashboard]
+      summary: Get dashboard summary statistics
+      responses:
+        "200":
+          description: Dashboard stats
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DashboardStats"
+
+  /inventory/activity:
+    get:
+      operationId: getInventoryActivity
+      tags: [inventory]
+      summary: Get recent inventory update activity feed
+      responses:
+        "200":
+          description: Activity feed
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ActivityEntry"
+
 components:
   schemas:
     HealthStatus:
@@ -34,3 +236,156 @@ components:
       required:
         - status
 
+    Hospital:
+      type: object
+      required: [id, name, lat, lng, phone, type, is_active, created_at]
+      properties:
+        id:
+          type: number
+        name:
+          type: string
+        lat:
+          type: number
+        lng:
+          type: number
+        phone:
+          type: string
+        type:
+          type: string
+          enum: [general, trauma, specialty, children]
+        address:
+          type: ["string", "null"]
+        is_active:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+
+    HospitalInput:
+      type: object
+      required: [name, lat, lng, phone, type]
+      properties:
+        name:
+          type: string
+          minLength: 1
+        lat:
+          type: number
+        lng:
+          type: number
+        phone:
+          type: string
+          minLength: 1
+        type:
+          type: string
+          enum: [general, trauma, specialty, children]
+        address:
+          type: string
+
+    HospitalUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+        phone:
+          type: string
+        type:
+          type: string
+          enum: [general, trauma, specialty, children]
+        address:
+          type: string
+        is_active:
+          type: boolean
+
+    InventoryItem:
+      type: object
+      required: [id, hospital_id, resource_type, quantity, last_updated]
+      properties:
+        id:
+          type: number
+        hospital_id:
+          type: number
+        hospital_name:
+          type: ["string", "null"]
+        resource_type:
+          type: string
+          enum: [ICU, GENERAL_BED, BLOOD_A_POS, BLOOD_A_NEG, BLOOD_B_POS, BLOOD_B_NEG, BLOOD_AB_POS, BLOOD_AB_NEG, BLOOD_O_POS, BLOOD_O_NEG]
+        quantity:
+          type: number
+        last_updated:
+          type: string
+          format: date-time
+
+    InventoryInput:
+      type: object
+      required: [hospital_id, resource_type, quantity]
+      properties:
+        hospital_id:
+          type: number
+        resource_type:
+          type: string
+          enum: [ICU, GENERAL_BED, BLOOD_A_POS, BLOOD_A_NEG, BLOOD_B_POS, BLOOD_B_NEG, BLOOD_AB_POS, BLOOD_AB_NEG, BLOOD_O_POS, BLOOD_O_NEG]
+        quantity:
+          type: number
+          minimum: 0
+
+    InventoryUpdate:
+      type: object
+      properties:
+        quantity:
+          type: number
+          minimum: 0
+        resource_type:
+          type: string
+          enum: [ICU, GENERAL_BED, BLOOD_A_POS, BLOOD_A_NEG, BLOOD_B_POS, BLOOD_B_NEG, BLOOD_AB_POS, BLOOD_AB_NEG, BLOOD_O_POS, BLOOD_O_NEG]
+
+    DashboardStats:
+      type: object
+      required: [total_hospitals, active_hospitals, total_icu_beds, total_general_beds, total_blood_units, inventory_by_type, low_stock_alerts]
+      properties:
+        total_hospitals:
+          type: number
+        active_hospitals:
+          type: number
+        total_icu_beds:
+          type: number
+        total_general_beds:
+          type: number
+        total_blood_units:
+          type: number
+        inventory_by_type:
+          type: array
+          items:
+            $ref: "#/components/schemas/InventorySummary"
+        low_stock_alerts:
+          type: number
+
+    InventorySummary:
+      type: object
+      required: [resource_type, total_quantity, hospital_count]
+      properties:
+        resource_type:
+          type: string
+        total_quantity:
+          type: number
+        hospital_count:
+          type: number
+
+    ActivityEntry:
+      type: object
+      required: [id, hospital_name, resource_type, quantity, action, timestamp]
+      properties:
+        id:
+          type: number
+        hospital_name:
+          type: string
+        resource_type:
+          type: string
+        quantity:
+          type: number
+        action:
+          type: string
+          enum: [created, updated, deleted]
+        timestamp:
+          type: string
+          format: date-time
