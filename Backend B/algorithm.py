@@ -106,13 +106,11 @@ def find_matches(request, hospitals):
         if required_blood:
 
             compatible = COMPATIBILITY[required_blood]
-
             available = hospital["blood"]
 
             blood_found = False
 
             for blood in compatible:
-
                 if blood in available:
                     blood_found = True
                     break
@@ -128,21 +126,21 @@ def find_matches(request, hospitals):
             hospital["lng"]
         )
 
-    candidate = hospital.copy()
+        # Create a copy of the hospital
+        candidate = hospital.copy()
 
-    candidate["distance"] = round(distance, 2)
+        candidate["distance"] = round(distance, 2)
 
-    resource = request["resource"]
+        candidate["available_quantity"] = hospital[resource]
 
-    candidate["available_quantity"] = hospital[resource]
+        candidate["score"] = score_candidate(candidate, request)
 
-    candidate["score"] = score_candidate(candidate, request)
+        matches.append(candidate)
 
-    matches.append(candidate)
-
-    # Sort hospitals by nearest distance
+    # Sort hospitals by highest score
     matches.sort(
-    key=lambda hospital: hospital["score"],
-    reverse=True
-)
+        key=lambda hospital: hospital["score"],
+        reverse=True
+    )
+
     return matches
