@@ -132,3 +132,4 @@ def find_matches(request, hospitals):
     key=lambda hospital: hospital["score"],
     reverse=True
 )
+    return matches
