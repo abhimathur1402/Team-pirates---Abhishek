@@ -54,23 +54,30 @@ def haversine(lat1, lng1, lat2, lng2):
 
     return R * c
 
+def score_candidate(candidate, request):
 
-def score_candidate(candidate):
+    # Avoid division by zero
+    distance_score = 1 / max(candidate["distance"], 0.1)
 
-    distance_score = 1 / candidate["distance"]
+    # Number of available units (ICU or Ventilator)
+    availability_score = min(candidate["available_quantity"] / 10, 1)
 
-    inventory_score = candidate["inventory_freshness"] / 100
+    # Urgency weight
+    urgency_weights = {
+        "critical": 1.0,
+        "high": 0.8,
+        "medium": 0.5
+    }
 
-    capacity_score = candidate["capacity_headroom"] / 100
+    urgency_score = urgency_weights.get(
+        request["urgency"],
+        0.5
+    )
 
     score = (
-
-        0.6 * distance_score
-
-        + 0.2 * inventory_score
-
-        + 0.2 * capacity_score
-
+        0.5 * distance_score +
+        0.3 * availability_score +
+        0.2 * urgency_score
     )
 
     return score
@@ -99,13 +106,11 @@ def find_matches(request, hospitals):
         if required_blood:
 
             compatible = COMPATIBILITY[required_blood]
-
             available = hospital["blood"]
 
             blood_found = False
 
             for blood in compatible:
-
                 if blood in available:
                     blood_found = True
                     break
@@ -121,15 +126,21 @@ def find_matches(request, hospitals):
             hospital["lng"]
         )
 
-        hospital["distance"] = round(distance, 2)
+        # Create a copy of the hospital
+        candidate = hospital.copy()
 
-        hospital["score"] = score_candidate(hospital)
+        candidate["distance"] = round(distance, 2)
 
-        matches.append(hospital)
+        candidate["available_quantity"] = hospital[resource]
 
-    # Sort hospitals by nearest distance
+        candidate["score"] = score_candidate(candidate, request)
+
+        matches.append(candidate)
+
+    # Sort hospitals by highest score
     matches.sort(
-    key=lambda hospital: hospital["score"],
-    reverse=True
-)
+        key=lambda hospital: hospital["score"],
+        reverse=True
+    )
+
     return matches
